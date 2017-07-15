@@ -4,18 +4,18 @@
 
 ## Installation
 
-1) Install ruby  (if necessary)
+Install ruby  (if necessary)
 
     rbenv install
 
-2) Install bundler
+Install bundler
 
     gem install bundler
     
-3) Install gems
+Install gems
 
     bundle install
 
-4) Run
+Run
 
     bundle exec ruby search.rb "ruby rails"
