@@ -6,6 +6,10 @@ require 'pp'
 require 'pmap'
 require 'benchmark'
 
+
+# Found this api key on GitHub, you SHOULD NOT commit your API KEYS, yes I'm talking to you JS devs ;) ;) ;)
+# Yinz can use it :), it's not mine
+
 INDEED_API_KEY = "1515288478458370"
 
 class Hash
