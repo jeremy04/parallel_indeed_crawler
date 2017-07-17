@@ -18,4 +18,4 @@ Install gems
 
 Run
 
-    bundle exec ruby search.rb "ruby rails"
+    bundle exec ./bin/parallel_indeed_crawler "ruby rails"
