@@ -3,8 +3,17 @@
 source 'https://rubygems.org'
 
 gem 'activesupport'
-gem 'bundler-audit', require: false
-gem 'byebug'
 gem 'indeed-ruby'
 gem 'pmap'
-gem 'rubocop', require: false
+
+group :development, :test do
+  gem 'bundler-audit', require: false
+  gem 'byebug'
+  gem 'rspec', '~> 3.0.0'
+  gem 'rubocop', require: false
+end
+
+group :test do
+  gem 'vcr'
+  gem 'webmock'
+end

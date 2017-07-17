@@ -8,12 +8,6 @@ require 'indeed-ruby'
 require 'pp'
 require 'pmap'
 
-# Found this api key on GitHub, you SHOULD NOT commit your API KEYS,
-# yes I'm talking to you JS devs ;) ;) ;)
-# Yinz can use it :), it's not mine
-
-INDEED_API_KEY = '1515288478458370'
-
 # monkey patch for with_indifferent_access
 class Hash
   def with_indifferent_access
@@ -27,6 +21,13 @@ end
 
 # Search class that does the work
 class Search
+
+  # Found this api key on GitHub, you SHOULD NOT commit your API KEYS,
+  # yes I'm talking to you JS devs ;) ;) ;)
+  # Yinz can use it :), it's not mine
+
+  INDEED_API_KEY = '1515288478458370'
+
   def initialize(city:, query:, client: Indeed::Client.new(INDEED_API_KEY))
     @city = city
     @client = client
@@ -68,45 +69,4 @@ class Search
       snippet: result[:snippet]
     }
   end
-end
-
-if ARGV[0].blank?
-  puts 'Please enter a keyword ( $ ruby search.rb "ruby rails" )'
-  exit 1
-end
-
-puts "Keyword: #{ARGV[0]} .."
-
-cities = ['San Francisco',
-          'Pittsburgh',
-          'Philadelphia',
-          'Seattle',
-          'San Diego',
-          'Raleigh',
-          'Chicago',
-          'New York',
-          'Washington DC',
-          'Austin']
-
-results = cities.pmap do |city|
-  s = Search.new(city: city, query: ARGV[0])
-  jobs = []
-  time = Benchmark.realtime do
-    jobs = s.retrieve_jobs
-  end
-  jobs = jobs.select { |job| job[:date] > 2.weeks.ago }
-  puts
-  jobs.sort_by { |j| j[:date] }.reverse.each do |job|
-    date = job[:date].strftime('%Y-%m-%d')
-    title = job[:title][0...50].chomp
-    puts "#{date} :: #{job[:company]} :: #{title} :: #{city}"
-  end
-  ["Crawl #{city} took #{time} seconds, found #{jobs.size} results", jobs.size]
-end
-
-puts ''
-puts 'Stats'
-puts ''
-results.sort_by { |r| -r[1] }.each do |result|
-  puts result[0]
 end
