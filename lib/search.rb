@@ -7,6 +7,7 @@ require 'benchmark'
 require 'indeed-ruby'
 require 'pp'
 require 'pmap'
+require 'byebug'
 
 # monkey patch for with_indifferent_access
 class Hash
@@ -38,6 +39,28 @@ class Search
       userip: '0.0.0.0',
       useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2)'
     }
+  end
+
+
+  def fetch
+    Enumerator.new do |yielder|
+      start = 0
+
+      loop do
+        results = fetch_data(start)
+        if results[:results].size == 10
+          results.map { |item| yielder << item }
+          start += 1
+        else
+          raise StopIteration
+        end
+      end
+    end.lazy
+  end
+
+  def fetch_data(start)
+    params = @params.dup.merge(limit: 10, start: start)
+    jobs = @client.search(params).with_indifferent_access
   end
 
   def retrieve_jobs
